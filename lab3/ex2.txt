@@ -1,0 +1,18 @@
+1)View:
+
+CREATE VIEW people AS
+SELECT * FROM Actor WHERE actor_id > 1;
+
+CREATE VIEW dogs AS
+SELECT * FROM city WHERE city = 'Moscow';
+
+2)Query
+SELECT COUNT(*) FROM people;
+
+3)Trigger
+create trigger great_length 
+before INSERT
+on
+film
+for each row
+execute procedure some_random_procedure();
