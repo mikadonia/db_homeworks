@@ -1,1 +1,44 @@
-kek
+#1 Explore the generated data and try to query it using Python or pgAdmin.. For Example, use SELECT statement
+ 
+Explain analyze SELECT * FROM customer
+ORDER BY name;
+
+#2 Create single-column b-tree and hash indexes on the previously created table using any fields you like (but
+different fields for each!)
+
+CREATE INDEX hashAddress
+    ON public.customer USING hash
+    (address)
+;
+
+CREATE INDEX nameBtree
+    ON public.customer USING btree
+    (name ASC NULLS LAST)
+;
+
+#3 Create a Python script that gets the data from the same queries and shows the elapsed time using EXPLAIN
+
+# create db
+# psql -d template1
+import psycopg2
+# https://stackabuse.com/working-with-postgresql-in-python/
+con = psycopg2.connect(database="customers", user="postgres",
+                       password="123456", host="127.0.0.1", port="5433")
+
+print("Database opened successfully")
+cur = con.cursor()
+cur.execute('''Explain analyze SELECT * FROM customer
+ORDER BY name;''')
+print("Table created successfully")
+print(cur.fetchall())
+
+#######output########
+Database opened successfully
+Table created successfully
+[('Index Scan using "nameBtree" on customer  (cost=0.42..14963.68 rows=100000 width=212) (actual time=1.721..108.976 rows=100000 loops=1)',), ('Planning Time: 2.420 ms',), ('Execution Time: 114.499 ms',)]
+
+#4 Is there any difference? Which queries are faster? (If you can’t see the difference try to increase the
+generated data to 1M)
+
+Yes, because we create 2 indexes in step #2 so our queries became approximately x10 faster. But no differences between query by script and by pgAdmin.
+
