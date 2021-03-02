@@ -1,1 +1,15 @@
-kek
+For 1.1
+"SELECT COUNT(*) FROM rental
+JOIN inventory ON inventory.inventory_id = rental.inventory_id
+WHERE (inventory.film_id = film.film_id)" subquery
+
+->  Aggregate  (cost=104.28..104.29 rows=1 width=8) (actual time=0.691..0.691 rows=1 loops=58)"
+
+Solution: compound index on columns inventory_id, film_id 
+
+For 1.2
+"Order by" query
+
+"Sort  (cost=529.79..529.79 rows=2 width=36) (actual time=18.894..18.898 rows=2 loops=1)"
+
+Solution: compound index on column payment.staff_id, payment.amount
