@@ -1,3 +1,6 @@
+"Example query: SELECT retrievecustomers(10, 40);"
+"Example output:"
+
 "retrievecustomers"
 "(11,2,Lisa,Anderson,lisa.anderson@sakilacustomer.org,15,t,2006-02-14,""2013-05-26 14:49:45.738"",1)"
 "(12,1,Nancy,Thomas,nancy.thomas@sakilacustomer.org,16,t,2006-02-14,""2013-05-26 14:49:45.738"",1)"
