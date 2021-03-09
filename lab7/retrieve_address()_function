@@ -1,0 +1,16 @@
+retrieve_address() function:
+
+CREATE FUNCTION public.retrieve_address()
+    RETURNS SETOF character varying
+    LANGUAGE 'sql'
+    
+AS $BODY$
+SELECT address FROM address
+where address like '%11%'
+and 400 <= city_id and city_id <= 600;
+$BODY$;
+
+ALTER FUNCTION public.retrieve_address()
+    OWNER TO postgres;
+    
+    
