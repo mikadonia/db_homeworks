@@ -1,0 +1,23 @@
+CREATE FUNCTION public.retrievecustomers(IN start integer, IN "end" integer )
+    RETURNS SETOF customer
+    LANGUAGE 'plpgsql'
+    
+AS $BODY$
+begin
+IF ($1 < 0) OR ($1 > 600) 
+THEN
+ RAISE NOTICE 'Error: start < 0 or start > 600';
+ELSEIF ($2 < 0) OR ($2 > 600)
+THEN
+	RAISE NOTICE 'Error: end < 0 or end > 600';
+END IF;
+RETURN QUERY
+	SELECT * FROM customer 
+	ORDER BY address_id
+	OFFSET $1
+	LIMIT ($2 - $1);
+end;
+$BODY$;
+
+ALTER FUNCTION public.retrievecustomers(integer)
+    OWNER TO postgres;
