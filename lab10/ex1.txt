@@ -1,0 +1,26 @@
+1) Different results due to isolation level
+Dirty read impossible in level: read committed
+
+Terminal 1 FINAL:
+ username |     fullname     | balance | group_id 
+----------+------------------+---------+----------
+ jones    | Alice Jones      |      82 |        1
+ bitdiddl | Ben Bitdiddle    |      65 |        1
+ mike     | Michael Dole     |      73 |        2
+ alyssa   | Alyssa P. Hacker |      79 |        3
+ bbrown   | Bob Brown        |     100 |        3
+(5 rows)
+
+Terminal 2 FINAL:
+ username |     fullname     | balance | group_id 
+----------+------------------+---------+----------
+ bitdiddl | Ben Bitdiddle    |      65 |        1
+ mike     | Michael Dole     |      73 |        2
+ alyssa   | Alyssa P. Hacker |      79 |        3
+ bbrown   | Bob Brown        |     100 |        3
+ ajones   | Alice Jones      |      82 |        1
+(5 rows)
+
+2)Transaction in 1st terminal not finished yet, so transaction in terminal 2 will wait
+ERROR:  canceling statement due to user request
+CONTEXT:  while updating tuple (0,6) in relation "accounts"
