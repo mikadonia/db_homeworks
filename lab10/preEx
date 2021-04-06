@@ -1,0 +1,10 @@
+CREATE TABLE public.account
+(
+    username character varying(30) NOT NULL,
+    fullname character varying(200) NOT NULL,
+    balance integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+ALTER TABLE public.account
+    OWNER to postgres;
