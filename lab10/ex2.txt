@@ -1,1 +1,13 @@
-kek
+1)isolation level Repeatable read => in terminal 2 should be no changes so we are proteccted from anomaly of repeatable read
+Terminal 1:
+ username |   fullname   | balance | group_id 
+----------+--------------+---------+----------
+ mike     | Michael Dole |      88 |        2
+ 
+ Terminal 2:
+  username |   fullname   | balance | group_id 
+----------+--------------+---------+----------
+ mike     | Michael Dole |      73 |        2
+ bbrown   | Bob Brown    |     100 |        2
+ 
+ 2) In 1st terminal not possible to commit changes due to isolation level
