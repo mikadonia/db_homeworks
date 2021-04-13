@@ -1,1 +1,100 @@
-kek
+1st Part:
+Given:
+Khabib Nurmagomedov(155) > Rafael Dos Anjos (155)
+» Rafael Dos Anjos > Neil Magny(170)
+Jon Jones(205) > Daniel Cormier(205)
+Michael Bisping (185)> Matt Hamill (185)
+» Jon Jones > Brandon Vera (205)
+Brandon Vera > Frank Mir (230)
+» Frank Mir > Brock Lesnar(230)
+» Neil Magny > Kelvin Gastelum(185)
+» Kelvin Gastelum > Michael Bisping
+» Michael Bisping > Matt Hamill
+» Michael Bisping > Kelvin Gastelum
+» Matt Hamill > Jon Jones
+
+Cipher query:
+create (a:fighter {name: "Khabib Nurmagomedov", weight:"155"}),(b:fighter {name: "Rafael Dos Anjos", weight:"155"}), (a)-[:beats]->(b)
+
+match (a:fighter) return a;
+
+match (a:fighter) where a.name = "Rafael Dos Anjos" 
+create (b:fighter {name: "Neil Magny", weight: "170"}),
+(c:fighter {name: "Jon Jones", weight: "205"}),
+(d:fighter {name: "Daniel Cormier", weight: "205"}),
+(e:fighter {name: "Michael Bisping", weight: "185"}),
+(f:fighter {name: "Matt Hamill", weight: "185"}),
+(g:fighter {name: "Brandon Vera", weight: "205"}),
+(h:fighter {name: "Frank Mir", weight: "230"}),
+(i:fighter {name: "Brock Lesnar", weight: "205"}),
+(j:fighter {name: "Kelvin Gastelum", weight: "205"}),
+(a)-[:beats]-> (b),
+(c)-[:beats]-> (d),
+(e)-[:beats]-> (f),
+(c)-[:beats]-> (g),
+(g)-[:beats]-> (h),
+(h)-[:beats]-> (i),
+(b)-[:beats]-> (j),
+(j)-[:beats]-> (e),
+(e)-[:beats]-> (f),
+(e)-[:beats]-> (j),
+(f)-[:beats]-> (c);
+
+2nd Part:
+
+Query1:
+MATCH (p:fighter)-[r:beats]->(pp:fighter)
+WHERE p.weight = '155' OR p.weight = '170' OR p.weight = '185'
+RETURN p
+
+Result:
+╒═════════════════════╕
+│"p.name"             │
+╞═════════════════════╡
+│"Khabib Nurmagomedov"│
+├─────────────────────┤
+│"Rafael Dos Anjos"   │
+├─────────────────────┤
+│"Neil Magny"         │
+├─────────────────────┤
+│"Michael Bisping"    │
+├─────────────────────┤
+│"Michael Bisping"    │
+├─────────────────────┤
+│"Michael Bisping"    │
+├─────────────────────┤
+│"Matt Hamill"        │
+
+Query 2:
+MATCH (p:fighter)-[r:beats]->(pp:fighter)
+with p.name as name, count((p:fighter)-[r:beats]->()) as some
+where some = 1
+RETURN name
+
+Result:
+"name"               │
+╞═════════════════════╡
+│"Khabib Nurmagomedov"│
+├─────────────────────┤
+│"Rafael Dos Anjos"   │
+├─────────────────────┤
+│"Neil Magny"         │
+├─────────────────────┤
+│"Matt Hamill"        │
+├─────────────────────┤
+│"Brandon Vera"       │
+├─────────────────────┤
+│"Frank Mir"          │
+├─────────────────────┤
+│"Kelvin Gastelum"    │
+└─────────────────────┘
+
+
+
+
+
+
+
+
+
+
