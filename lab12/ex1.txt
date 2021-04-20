@@ -1,1 +1,109 @@
 zadd customer_numb 001 "Jane Doe"
+1
+zadd customer_numb 002 "John Doe"
+1
+zadd customer_numb 003 "Jane Smith"
+1
+zadd customer_numb 004 "John Smith"
+1
+zadd customer_numb 005 "John Jones"
+1
+zadd customer_numb 006 "Jane Jones"
+1
+
+//Run query to see list
+
+ZRANGE customer_numb 0 -1 WITHSCORES
+1) "Jane Doe"
+2) "1"
+3) "John Doe"
+4) "2"
+5) "Jane Smith"
+6) "3"
+7) "John Smith"
+8) "4"
+9) "John Jones"
+10) "5"
+11) "Jane Jones"
+12) "6"
+
+//Trying to do by hmset, but.....
+
+hgetall customers
+{
+  "customer_numb": "2",
+  "first_name": "John",
+  "last_name": "Doe"
+}
+hmset customers customer_numb 1 first_name "Jane" last_name "Doe"
+"OK"
+hgetall customers
+{
+  "customer_numb": "1",
+  "first_name": "Jane",
+  "last_name": "Doe"
+}
+hset customers customer_numb 1 first_name "Jane" last_name "Doe"
+0
+hset customers customer_numb 2 first_name "John" last_name "Doe"
+0
+hgetall customers
+{
+  "customer_numb": "2",
+  "first_name": "John",
+  "last_name": "Doe"
+}
+zrange customers 0 -1
+"WRONGTYPE Operation against a key holding the wrong kind of value"
+hmset customers:10200 customer_numb 1 first_name "Jane" last_name "Doe"
+"OK"
+zadd customer_numb 001 first_name "Jane" last_name "Doe" customers:10200
+"ERR value is not a valid float"
+zadd customer_numb 001 customers:10200
+1
+zadd first_name "Jane" customers:10200
+"ERR value is not a valid float"
+zadd first_name "Jane" customers:10200
+"ERR value is not a valid float"
+hmset customers:10200 customer_numb 1 first_name Jane last_name Doe
+"OK"
+zadd customer_numb 001 customers:10200
+0
+zadd first_name Jane customers:10200
+"ERR value is not a valid float"
+hmset customers:10200 customer_numb 1 first_name "Jane" last_name "Doe"
+"OK"
+hmset customers:1 customer_numb 1 first_name Jane last_name Doe
+"OK"
+zadd customers.customer_numb.index 001
+"ERR wrong number of arguments for 'zadd' command"
+zadd customers.customer_numb.index 1 1
+1
+hmset customers:2 customer_numb 2 first_name John last_name Doe
+"OK"
+zadd customers.customer_numb.index 2 2
+1
+hmset customers:1 customer_numb 2 first_name John last_name Doe
+"OK"
+zadd customers.customer_numb.index 1 2
+0
+hmset customers:1 customer_numb 1 first_name Jane last_name Doe
+"OK"
+zadd customers.customer_numb.index 1 1
+0
+hmset customers:3 customer_numb 3 first_name Jane last_name Smith
+"OK"
+zadd customers.customer_numb.index 3 3
+1
+hmset customers:4 customer_numb 4 first_name John last_name Smith
+"OK"
+zadd customers.customer_numb.index 4 4
+1
+hmset customers:5 customer_numb 5 first_name Jane last_name Jones
+"OK"
+zadd customers.customer_numb.index 5 5
+1
+hmset customers:6 customer_numb 6 first_name John last_name Jones
+"OK"
+zadd customers.customer_numb.index 6 6
+1
