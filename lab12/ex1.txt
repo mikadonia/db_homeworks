@@ -1,0 +1,1 @@
+zadd customer_numb 001 "Jane Doe"
